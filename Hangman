@@ -1,0 +1,51 @@
+print("Welcome to Hangman!")
+
+lives = 0
+winner = False
+userWord = 0
+letterFound = False
+# Difficulty Selector
+
+difficulty = input("Select your desired difficulty ('Easy', 'Medium', 'Hard', 'Impossible'): ")
+match difficulty:
+    case "Easy":
+        file = open(r"C:\Users\Oscar\OneDrive\Documents\VSCode\Random Projects\Portfolio Fillers\Hangmann\easyHangman.txt")
+    case "Medium":
+        file = open(r"C:\Users\Oscar\OneDrive\Documents\VSCode\Random Projects\Portfolio Fillers\Hangmann\mediumHangman.txt")
+    case "Hard":
+        file = open(r"C:\Users\Oscar\OneDrive\Documents\VSCode\Random Projects\Portfolio Fillers\Hangmann\hardHangman.txt")
+    case "Impossible":
+        file = open(r"C:\Users\Oscar\OneDrive\Documents\VSCode\Random Projects\Portfolio Fillers\Hangmann\impossibleHangman.txt")
+
+import random        
+
+def requestLetter(emptyWord):
+    global lives, winner, userWord, letterFound
+    while lives != 0 and winner != True:
+        print(emptyWord)
+        userGuess = input("Take your guess: ")
+        for i in range (len(userWord)):
+            if userWord[i] == userGuess:
+                emptyWord[i] = userGuess
+                letterFound = True
+        if letterFound == False:
+            lives = lives - 1
+        if userGuess == userWord:
+            winner = True
+
+
+def playGame():
+    global lives, winner, userWord, letterFound
+    emptyWord = []
+    lives = 5
+    lines = file.readlines()
+    userWord = random.choice(lines)
+    for i in range (len(userWord)):
+        emptyWord.append("_ ")
+    requestLetter(emptyWord)
+    if lives == 0:
+        print("You lose! The word was " + userWord)
+    else:
+        print("You win! The word was " + userWord)
+
+playGame()
